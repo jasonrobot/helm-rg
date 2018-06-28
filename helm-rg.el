@@ -156,6 +156,7 @@
 ;;; Code:
 
 (require 'ansi-color)
+(require 'cl)
 (require 'cl-lib)
 (require 'dash)
 (require 'font-lock)
@@ -1613,7 +1614,7 @@ Merges stdout and stderr, and trims whitespace from the result."
   (let* ((colored-line (ansi-color-apply input-line))
          (string-result
           (cl-destructuring-bind (&key cur-file) helm-rg--process-output-parse-state
-            (if-let ((parsed (helm-rg--process-transition cur-file colored-line)))
+            (if-let* ((parsed (helm-rg--process-transition cur-file colored-line)))
                 (cl-destructuring-bind (&key file-path line-content) parsed
                   (setq-local helm-rg--process-output-parse-state (list :cur-file file-path))
                   ;; Exits here.
